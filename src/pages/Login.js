@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 export default function Login() {
   const [loginId, setLoginId] = useState("");
@@ -8,6 +9,12 @@ export default function Login() {
   const [error, setError] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const navigate = useNavigate();
+
+
+  // React.useEffect(()=>{
+  //   if(localStorage.getItem('auth'))navigate('/Home')
+  // },[])
+  
 
   const handleLogin = async () => {
     
@@ -26,7 +33,9 @@ export default function Login() {
     try {
       const response = await axios.post("http://localhost:8080/login", { loginId, password });
       if (response.status === 200) {
-        navigate("/Home");
+        sessionStorage.setItem("loggedInUser", loginId);
+        navigate("/Home")
+        localStorage.setItem('auth',true);
       }
     } catch (error) {
       if (error.response) {

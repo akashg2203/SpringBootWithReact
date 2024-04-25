@@ -1,9 +1,16 @@
 // Change from myAccount.js to MyAccount.js
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function MyAccount() {
+
+  const usedavigate = useNavigate();
+
+  React.useEffect(()=>{
+    if(!localStorage.getItem('auth')) usedavigate('/')
+  },[])
+
   const [user, setUser] = useState({
     loginId: "",
     login_name: "",

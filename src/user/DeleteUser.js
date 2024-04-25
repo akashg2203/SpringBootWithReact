@@ -3,6 +3,13 @@ import React, { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 export default function DeleteUser() {
+
+    const usedavigate = useNavigate();
+
+  React.useEffect(()=>{
+    if(!localStorage.getItem('auth')) usedavigate('/')
+  },[])
+
     const { id } = useParams();
     const navigate = useNavigate();
 

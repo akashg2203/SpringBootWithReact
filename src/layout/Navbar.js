@@ -7,11 +7,14 @@ export default function NavbarComponent() {
   const location = useLocation();
   const show = location.pathname !== "/" && location.pathname !== "/register";
   const navigate = useNavigate();
-  const userId = 14;
+  const userId = sessionStorage.getItem("loggedInUser");
+
+console.log("sks"+userId);
   
   const handlelogout = () =>{
     const Confirmed = window.confirm("Are you sure you want to logout?");
 if(Confirmed){
+  localStorage.removeItem('auth');
   navigate("/")
 }
   }

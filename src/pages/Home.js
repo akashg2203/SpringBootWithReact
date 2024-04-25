@@ -1,9 +1,18 @@
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Home() {
+
+  const navigate = useNavigate();
+
+  React.useEffect(()=>{
+    if(!localStorage.getItem('auth')) navigate('/')
+  },[])
+
+  const location = useLocation();
+  const userId = location.state && location.state.loggedInUser
 
     const[Users,setUsers]=useState([])
 

@@ -4,6 +4,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export default function EditUsers() {
 
+   const usedavigate = useNavigate();
+
+  React.useEffect(()=>{
+    if(!localStorage.getItem('auth')) usedavigate('/')
+  },[])
+
    let navigate = useNavigate();
 
    const {id}=useParams();

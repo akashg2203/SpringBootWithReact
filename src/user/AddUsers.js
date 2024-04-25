@@ -4,6 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export default function AddUsers() {
 
+   
+  const usedavigate = useNavigate();
+
+  React.useEffect(()=>{
+    if(!localStorage.getItem('auth')) usedavigate('/')
+  },[])
+
    let navigate = useNavigate();
 
    const [user,setUser] = useState({

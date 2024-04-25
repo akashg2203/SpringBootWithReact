@@ -6,6 +6,12 @@ import axios, { Axios } from "axios";
 
 export default function ChangePassword(){
 
+  const usedavigate = useNavigate();
+
+  React.useEffect(()=>{
+    if(!localStorage.getItem('auth')) usedavigate('/')
+  },[])
+
     const[oldPassword, setOldPassword] = useState("");
     const[password, setPassword] = useState("");
     const[confirmPassword, setConfirmPassword] = useState("");

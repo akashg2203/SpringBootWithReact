@@ -4,6 +4,13 @@ import axios from 'axios';
 
 
 export default function Register() {
+
+  const usedavigate = useNavigate();
+
+  React.useEffect(()=>{
+    if(!localStorage.getItem('auth')) usedavigate('/')
+  },[])
+
     const [loginId,setLoginId] = useState("");
     const [login_name,setLogin_name] = useState("");
     const [password,setPassword] = useState("");
