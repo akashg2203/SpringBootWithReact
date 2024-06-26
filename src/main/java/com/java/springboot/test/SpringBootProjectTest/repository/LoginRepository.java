@@ -9,6 +9,6 @@ public interface LoginRepository extends JpaRepository<Login, Long>{
 	
     boolean existsByLoginId(String loginId);
     Optional<Login> findByLoginId(String loginId);
-    Optional<Login> findBySno(Long id);
+   // Optional<Login> findByLoginO(Long id);
 
 }

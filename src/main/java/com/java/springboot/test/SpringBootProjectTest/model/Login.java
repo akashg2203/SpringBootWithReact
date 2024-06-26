@@ -16,7 +16,7 @@ public class Login {
 	private String loginId;
 	private String password;
     private String login_name;
-	public String getLogin_name() {
+	public  String getLogin_name() {
 		return login_name;
 	}
 

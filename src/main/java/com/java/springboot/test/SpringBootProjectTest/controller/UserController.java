@@ -11,6 +11,8 @@ import java.util.Optional;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,7 @@ public class UserController {
 	private Environment env;
 
 	@PostMapping("/login")
-	ResponseEntity<?> login(@RequestBody Login loginuser) {
+	ResponseEntity<?> login(@RequestBody Login loginuser, HttpSession session) {
 		Optional<Login> optionalUser = loginRepository.findByLoginId(loginuser.getLoginId());
 
 		if (optionalUser.isPresent()) {
@@ -60,6 +62,7 @@ public class UserController {
 				e.printStackTrace();
 			}
 			if (decrypt.equals(loginuser.getPassword())) {
+				session.setAttribute("loggedInUser", storedUser);
 				 return ResponseEntity.ok().body(storedUser);
 			} else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect password");
@@ -98,8 +101,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/myAccount/{id}")
-	Login myAccounty(@PathVariable long id) throws InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		Login ls = loginRepository.findBySno(id).orElseThrow(() -> new UserNotFoundException(id));
+	Login myAccounty(@PathVariable String id) throws InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+		Login ls = loginRepository.findByLoginId(id).orElseThrow(() -> new UserNotFoundException(id));
 		Login login = new Login();
 		login.setLogin_date(ls.getLogin_date());
 		login.setLogin_name(ls.getLogin_name());
@@ -112,10 +115,10 @@ public class UserController {
 	}
 	
 	@PutMapping("/updatePassword/{id}")
-	Login updatePassword(@RequestBody Login login, @PathVariable Long id)
+	Login updatePassword(@RequestBody Login login, @PathVariable String id)
 	        throws InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
 	        IllegalBlockSizeException, BadPaddingException {
-				return loginRepository.findById(id).map(user -> {
+				return loginRepository.findByLoginId(id).map(user -> {
 					String key = env.getProperty("key");
 					String Iv = env.getProperty("Iv");
 					String encrypt = Util.Encrypt(login.getPassword(), key, Iv);
